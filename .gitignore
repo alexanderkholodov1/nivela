@@ -1,0 +1,24 @@
+# === Secretos — NUNCA subir ===
+private/
+*.pat
+*.key
+.env
+.env.*
+
+# === Firebase ===
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+.firebaserc.local
+
+# === Node ===
+node_modules/
+npm-debug.log*
+yarn-error.log
+
+# === OS / editores ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
