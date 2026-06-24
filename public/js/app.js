@@ -66,7 +66,7 @@
       b.className = "chip" + (activeRole && activeRole.id === role.id ? " active" : "");
       b.setAttribute("role", "tab");
       b.setAttribute("aria-selected", activeRole && activeRole.id === role.id ? "true" : "false");
-      const tag = role.group === "bank" ? "Banca" : "PYME";
+      const tag = role.area ? role.area[lang] : "";
       b.innerHTML = svgIcon(role.icon) + `<span>${role.label[lang]}</span><span class="chip-tag">${tag}</span>`;
       b.addEventListener("click", () => { activeRole = role; renderChips(); renderPlan(role); });
       wrap.appendChild(b);
@@ -90,12 +90,16 @@
     role.modules.forEach((m, i) => {
       const key = role.id + ":" + i;
       const isDone = done.has(key);
+      const isCriterio = m.kind === "criterio";
+      const kindTag = isCriterio
+        ? `<span class="mod-kind criterio">${t("demo.kindCriterio")}</span><span class="mod-tool">${t("demo.agnostic")}</span>`
+        : `<span class="mod-kind aplicacion">${t("demo.kindAplicacion")}</span><span class="mod-tool">${m.tool}</span>`;
       html += `
-        <article class="module${isDone ? " done" : ""}" data-key="${key}">
+        <article class="module${isDone ? " done" : ""}${isCriterio ? " is-criterio" : ""}" data-key="${key}">
           <div class="mod-top">
             <span class="mod-num">${String(i + 1).padStart(2, "0")}</span>
             <div class="mod-main">
-              <span class="mod-tool">${m.tool}</span>
+              <div class="mod-tags">${kindTag}</div>
               <div class="mod-title">${m.title[lang]}</div>
               <p class="mod-outcome">${m.outcome[lang]}</p>
               ${m.sample ? `<button class="lesson-toggle" type="button">${t("demo.seeLesson")}</button>${lessonHtml(m.sample)}` : ""}
@@ -214,6 +218,9 @@
         <span class="dash-prog"><span style="width:${dashAnimated ? mb.progress + "%" : "0"}" data-w="${mb.progress}"></span></span>`;
       rows.appendChild(row);
     });
+    const skStrong = $("#skStrong"), skImprove = $("#skImprove");
+    if (skStrong) skStrong.innerHTML = TEAM_SAMPLE.strong[lang].map((s) => `<span class="sk-chip up">${s}</span>`).join("");
+    if (skImprove) skImprove.innerHTML = TEAM_SAMPLE.improve[lang].map((s) => `<span class="sk-chip down">${s}</span>`).join("");
     if (!textOnly && !dashAnimated) {
       $("#kAdopt").textContent = "0%";
       $("#kActive").textContent = "0";
