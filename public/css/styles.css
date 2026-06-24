@@ -5,20 +5,20 @@
    ========================================================================= */
 
 :root {
-  --bg: #EFF3F2;
+  --bg: #F4F6FB;
   --surface: #FFFFFF;
-  --surface-2: #F5F8F7;
-  --ink: #112826;
-  --ink-soft: #45605C;
-  --line: #DBE5E2;
-  --brand: #0E8C82;
-  --brand-deep: #0A6157;
-  --brand-tint: #DCEEEB;
+  --surface-2: #EDF1FA;
+  --ink: #0F1B33;
+  --ink-soft: #4A5878;
+  --line: #DCE3F1;
+  --brand: #2E5AE8;
+  --brand-deep: #1E3FA8;
+  --brand-tint: #DEE7FD;
   --spark: #C9821E;
   --spark-strong: #B5710F;
   --spark-soft: #F7EAD2;
-  --shadow: 0 1px 2px rgba(11,40,38,.05), 0 10px 30px -12px rgba(11,40,38,.18);
-  --shadow-lg: 0 24px 60px -20px rgba(11,40,38,.30);
+  --shadow: 0 1px 2px rgba(15,27,51,.05), 0 10px 30px -12px rgba(15,27,51,.18);
+  --shadow-lg: 0 24px 60px -20px rgba(15,27,51,.30);
   --radius: 16px;
   --radius-sm: 11px;
   --maxw: 1140px;
@@ -29,18 +29,18 @@
 }
 
 [data-theme="dark"] {
-  --bg: #0A1716;
-  --surface: #102321;
-  --surface-2: #0D1E1C;
-  --ink: #E8EFEC;
-  --ink-soft: #9CB2AD;
-  --line: #1E3330;
-  --brand: #2FBCAB;
-  --brand-deep: #1C9082;
-  --brand-tint: #11302C;
+  --bg: #0A1124;
+  --surface: #111A35;
+  --surface-2: #0D1530;
+  --ink: #E8EDF8;
+  --ink-soft: #9AA8C8;
+  --line: #1E2A4A;
+  --brand: #6E8EFF;
+  --brand-deep: #3E63E6;
+  --brand-tint: #16203F;
   --spark: #F0B45A;
   --spark-strong: #F4C173;
-  --spark-soft: #23211A;
+  --spark-soft: #221C12;
   --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 34px -14px rgba(0,0,0,.5);
   --shadow-lg: 0 28px 70px -22px rgba(0,0,0,.65);
 }
@@ -236,6 +236,14 @@ a { color: inherit; text-decoration: none; }
 .mod-title { font-family: var(--font-display); font-weight: 700; font-size: 1.06rem; letter-spacing: -.01em; }
 .mod-tool { display: inline-block; font-family: var(--font-mono); font-size: .68rem; letter-spacing: .04em; color: var(--brand-deep); background: var(--brand-tint); padding: 3px 8px; border-radius: 6px; margin-bottom: 6px; }
 [data-theme="dark"] .mod-tool { color: var(--brand); }
+.mod-tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 6px; }
+.mod-tags .mod-tool { margin-bottom: 0; }
+.mod-kind { font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+.mod-kind.criterio { color: var(--spark-strong); background: var(--spark-soft); }
+[data-theme="dark"] .mod-kind.criterio { color: var(--spark); }
+.mod-kind.aplicacion { color: var(--brand-deep); background: var(--brand-tint); }
+[data-theme="dark"] .mod-kind.aplicacion { color: var(--brand); }
+.module.is-criterio { border-left: 3px solid var(--spark); }
 .mod-outcome { color: var(--ink-soft); font-size: .92rem; margin-top: 4px; }
 .mod-badge { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; border: 2px dashed var(--line); display: grid; place-items: center; color: transparent; transition: all .25s ease; }
 .module.done .mod-badge { border: 2px solid var(--spark); background: var(--spark); color: #fff; transform: scale(1); }
@@ -300,7 +308,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ---- CTA band ----------------------------------------------------------- */
 .cta-band { background: var(--brand-deep); color: #fff; text-align: center; }
-[data-theme="dark"] .cta-band { background: linear-gradient(120deg, var(--brand-deep), #0a3a35); }
+[data-theme="dark"] .cta-band { background: linear-gradient(120deg, var(--brand-deep), #0c1a3f); }
 .cta-inner h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); margin-bottom: 12px; }
 .cta-inner p { color: rgba(255,255,255,.86); max-width: 48ch; margin: 0 auto 26px; font-size: 1.06rem; }
 
@@ -328,17 +336,41 @@ a { color: inherit; text-decoration: none; }
 .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 
-/* ---- Responsive --------------------------------------------------------- */
+/* ---- Diferenciadores (Por qué Nivela) ----------------------------------- */
+.why { background: var(--surface-2); }
+.diff-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
+.diff-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 20px; box-shadow: var(--shadow); }
+.diff-card .diff-ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--brand); background: var(--brand-tint); margin-bottom: 14px; }
+[data-theme="dark"] .diff-card .diff-ic { color: var(--brand); }
+.diff-card:first-child .diff-ic { color: var(--spark-strong); background: var(--spark-soft); }
+[data-theme="dark"] .diff-card:first-child .diff-ic { color: var(--spark); }
+.diff-card .diff-ic svg { width: 19px; height: 19px; }
+.diff-card h3 { font-size: 1.04rem; margin-bottom: 7px; }
+.diff-card p { color: var(--ink-soft); font-size: .9rem; }
+
+/* ---- Dashboard skills (fortalezas / a mejorar) -------------------------- */
+.dash-skills { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); }
+.dash-skills .sk-label { font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); display: block; margin-bottom: 8px; }
+.sk-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sk-chip { font-size: .74rem; font-weight: 600; padding: 4px 9px; border-radius: 999px; border: 1px solid var(--line); }
+.sk-chip.up { color: var(--brand-deep); background: var(--brand-tint); border-color: transparent; }
+[data-theme="dark"] .sk-chip.up { color: var(--brand); }
+.sk-chip.down { color: var(--spark-strong); background: var(--spark-soft); border-color: transparent; }
+[data-theme="dark"] .sk-chip.down { color: var(--spark); }
+
+
 @media (max-width: 920px) {
   .hero-grid { grid-template-columns: 1fr; gap: 38px; }
   .hero-card { max-width: 420px; }
   .teams-grid { grid-template-columns: 1fr; gap: 34px; }
+  .diff-grid { grid-template-columns: repeat(2, 1fr); }
   .nav { display: none; }
 }
 @media (max-width: 760px) {
   .section { padding: 60px 0; }
   .hero { padding: 52px 0 44px; }
-  .cards-3, .steps { grid-template-columns: 1fr; }
+  .cards-3, .steps, .diff-grid { grid-template-columns: 1fr; }
+  .dash-skills { grid-template-columns: 1fr; }
   .header-actions .ghost-btn { display: none; }
   .demo-stats { width: 100%; margin-left: 0; }
   .footer-inner { flex-direction: column; }
