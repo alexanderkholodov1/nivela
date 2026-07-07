@@ -1,0 +1,170 @@
+/* ============================================================
+   Nivela — sistema de diseño compartido (landing + app)
+   ============================================================ */
+
+:root{
+  --bg:#F6F4EE; --surface:#FFFFFF; --surface-2:#EFECE3; --ink:#191713;
+  --text:#3A362E; --muted:#7A7466; --line:#E3DED2; --line-strong:#CFC9B9;
+  --accent:#175A4C; --accent-ink:#0E4237; --accent-soft:#E2EEE9; --accent-line:#BCD6CD;
+  --gold:#A66A1C; --gold-soft:#F5EAD5;
+  --good:#2E7D5B; --good-soft:#E3F0E8;
+  --warn:#B4552D; --warn-soft:#F7E8DF;
+  --danger:#A3372E;
+  --shadow:0 1px 2px rgba(25,23,19,.05),0 10px 30px -12px rgba(25,23,19,.12);
+  --shadow-sm:0 1px 2px rgba(25,23,19,.05),0 4px 10px -6px rgba(25,23,19,.08);
+  --r:12px; --r-lg:18px; --r-sm:8px;
+  --display:'Fraunces',Georgia,serif;
+  --body:'Inter',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --maxw:1120px;
+}
+[data-theme="dark"]{
+  --bg:#141310; --surface:#1C1A16; --surface-2:#242119; --ink:#EFEBE0;
+  --text:#C8C2B3; --muted:#918B7B; --line:#2D2A22; --line-strong:#3D3930;
+  --accent:#4CB795; --accent-ink:#7ED0B6; --accent-soft:#17302A; --accent-line:#2A4A40;
+  --gold:#D9A24C; --gold-soft:#2A2210;
+  --good:#4CB88A; --good-soft:#132A20;
+  --warn:#D97E50; --warn-soft:#2E1D13;
+  --danger:#D4685E;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 14px 34px -14px rgba(0,0,0,.55);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3),0 5px 14px -8px rgba(0,0,0,.45);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);background:var(--bg);color:var(--text);
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+  transition:background .3s ease,color .3s ease;
+}
+h1,h2,h3,h4{font-family:var(--display);color:var(--ink);line-height:1.15;font-weight:600;letter-spacing:-.01em}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--body);cursor:pointer}
+img,svg{display:block}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+/* ---------- botones ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;justify-content:center;
+  border:1px solid transparent;border-radius:999px;
+  padding:11px 22px;font-size:15px;font-weight:600;color:var(--ink);
+  background:transparent;transition:all .18s ease;white-space:nowrap;
+}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+[data-theme="dark"] .btn-primary{color:#0F1D18}
+.btn-outline{border-color:var(--line-strong)}
+.btn-outline:hover{border-color:var(--ink)}
+.btn-soft{background:var(--accent-soft);color:var(--accent-ink);border-color:transparent}
+.btn-soft:hover{background:var(--accent-line)}
+.btn-sm{padding:7px 14px;font-size:13.5px}
+.btn-block{width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ---------- chips / badges ---------- */
+.chip{
+  display:inline-flex;align-items:center;gap:6px;border-radius:999px;
+  padding:3px 10px;font-size:12px;font-weight:600;letter-spacing:.02em;
+  background:var(--surface-2);color:var(--muted);border:1px solid var(--line);
+}
+.chip.acc{background:var(--accent-soft);color:var(--accent-ink);border-color:var(--accent-line)}
+.chip.good{background:var(--good-soft);color:var(--good);border-color:transparent}
+.chip.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.chip.gold{background:var(--gold-soft);color:var(--gold);border-color:transparent}
+
+/* ---------- tarjetas ---------- */
+.card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r-lg);box-shadow:var(--shadow-sm);
+}
+.card-pad{padding:22px}
+
+/* ---------- formularios ---------- */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:13px;font-weight:600;color:var(--ink)}
+.input,textarea.input,select.input{
+  width:100%;border:1px solid var(--line-strong);border-radius:var(--r-sm);
+  background:var(--surface);color:var(--ink);padding:10px 12px;font-size:14.5px;
+  font-family:var(--body);outline:none;transition:border-color .15s;
+}
+.input:focus{border-color:var(--accent)}
+
+/* ---------- tablas ---------- */
+.table{width:100%;border-collapse:collapse;font-size:14px}
+.table th{
+  text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--muted);font-weight:600;padding:10px 12px;border-bottom:1px solid var(--line-strong);
+}
+.table td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle;color:var(--text)}
+.table tr:last-child td{border-bottom:none}
+
+/* ---------- barras de progreso ---------- */
+.bar{height:7px;border-radius:99px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line)}
+.bar > i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .5s ease}
+.bar.gold > i{background:var(--gold)}
+
+/* ---------- toggles de tema/idioma ---------- */
+.toggles{display:flex;align-items:center;gap:8px}
+.tgl{
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--muted);
+  border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600;
+  transition:all .15s ease;line-height:1;
+}
+.tgl:hover{color:var(--ink);border-color:var(--ink)}
+
+/* ---------- bloque de prompt / código ---------- */
+.promptbox{
+  font-family:var(--mono);font-size:13px;line-height:1.55;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);
+  padding:14px 16px;color:var(--ink);white-space:pre-wrap;position:relative;
+}
+.promptbox .copybtn{
+  position:absolute;top:8px;right:8px;font-family:var(--body);
+}
+
+/* ---------- chat del mentor ---------- */
+.chat{display:flex;flex-direction:column;gap:10px}
+.msg{max-width:88%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.55}
+.msg.mentor{background:var(--accent-soft);color:var(--ink);border-bottom-left-radius:4px;align-self:flex-start}
+.msg.user{background:var(--surface-2);color:var(--ink);border-bottom-right-radius:4px;align-self:flex-end}
+.msg .term{border-bottom:1.5px dashed var(--accent);cursor:pointer}
+
+/* ---------- modal ---------- */
+.modal-back{
+  position:fixed;inset:0;background:rgba(20,18,14,.5);backdrop-filter:blur(3px);
+  display:none;align-items:center;justify-content:center;z-index:90;padding:20px;
+}
+.modal-back.open{display:flex}
+.modal{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);max-width:560px;width:100%;max-height:86vh;overflow:auto;padding:26px;
+}
+
+/* ---------- toast ---------- */
+#toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;
+  font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;
+  transition:all .25s ease;z-index:99;box-shadow:var(--shadow);
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ---------- marca ---------- */
+.brand{display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-weight:650;font-size:20px;color:var(--ink);letter-spacing:-.01em}
+.brand svg{flex:none}
+.brand .lvl-bubble{fill:var(--accent)}
+.brand .lvl-body{stroke:var(--ink)}
+
+/* ---------- utilidades ---------- */
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--mono)}
+.flex{display:flex;align-items:center;gap:10px}
+.between{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mt-1{margin-top:8px}.mt-2{margin-top:16px}.mt-3{margin-top:24px}.mt-4{margin-top:36px}
+.mb-1{margin-bottom:8px}.mb-2{margin-bottom:16px}.mb-3{margin-bottom:24px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:860px){.grid2,.grid3{grid-template-columns:1fr}}
+.divider{border:none;border-top:1px solid var(--line);margin:20px 0}
+::selection{background:var(--accent-soft);color:var(--accent-ink)}

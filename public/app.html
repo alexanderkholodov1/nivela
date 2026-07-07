@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nivela — Plataforma</title>
+<meta name="description" content="Entra a Nivela: tu ruta, tu mentor y tus certificados verificables." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,450;0,9..144,600;0,9..144,650;1,9..144,450&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/nivela.css" />
+<style>
+/* ================= LOGIN ================= */
+#login{min-height:100vh;display:grid;grid-template-columns:1fr 1.1fr}
+@media(max-width:900px){#login{grid-template-columns:1fr}}
+.login-brandside{
+  background:var(--accent-ink);color:#EAF3EF;padding:48px;display:flex;flex-direction:column;justify-content:space-between;
+}
+[data-theme="dark"] .login-brandside{background:#0E241E}
+.login-brandside .brand{color:#fff}
+.login-brandside .brand .lvl-body{stroke:#fff}
+.login-brandside .brand .lvl-bubble{fill:#7ED0B6}
+.login-brandside h2{color:#fff;font-size:clamp(26px,3vw,36px);max-width:400px;line-height:1.2}
+.login-brandside p{opacity:.85;max-width:400px;margin-top:14px;font-size:15px}
+@media(max-width:900px){.login-brandside{display:none}}
+.login-formside{display:flex;align-items:center;justify-content:center;padding:48px 24px}
+.login-box{width:100%;max-width:400px}
+.login-box h1{font-size:26px;margin-bottom:6px}
+.login-box .sub{font-size:14px;color:var(--muted);margin-bottom:26px}
+.demo-sep{display:flex;align-items:center;gap:12px;margin:22px 0 14px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.demo-sep::before,.demo-sep::after{content:"";flex:1;height:1px;background:var(--line)}
+.demo-btn{
+  width:100%;display:flex;align-items:center;gap:14px;text-align:left;
+  background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);
+  padding:13px 16px;margin-bottom:10px;transition:all .15s ease;
+}
+.demo-btn:hover{border-color:var(--accent);box-shadow:var(--shadow-sm)}
+.demo-btn .avatar{flex:none}
+.demo-btn b{display:block;font-size:14.5px;color:var(--ink)}
+.demo-btn span{font-size:12.5px;color:var(--muted)}
+.avatar{
+  width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;color:#fff;background:var(--accent);flex:none;
+}
+[data-theme="dark"] .avatar{color:#0F1D18}
+.avatar.gold{background:var(--gold)}
+.avatar.ink{background:#54504A}
+
+/* ================= SHELL ================= */
+#shell{display:none;min-height:100vh}
+#shell.on{display:grid;grid-template-columns:236px 1fr}
+@media(max-width:860px){#shell.on{grid-template-columns:1fr}}
+aside.side{
+  border-right:1px solid var(--line);background:var(--surface);
+  padding:20px 14px;display:flex;flex-direction:column;gap:4px;
+  position:sticky;top:0;height:100vh;
+}
+@media(max-width:860px){aside.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;border-right:none;border-bottom:1px solid var(--line)}}
+.side .brand{padding:4px 10px 18px}
+.snav{
+  display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  border:none;background:transparent;border-radius:var(--r-sm);
+  padding:9px 12px;font-size:14px;font-weight:500;color:var(--muted);transition:all .12s;
+}
+.snav:hover{color:var(--ink);background:var(--surface-2)}
+.snav.on{background:var(--accent-soft);color:var(--accent-ink);font-weight:600}
+.side .spacer{flex:1}
+.side .userchip{display:flex;align-items:center;gap:10px;padding:10px 10px;border-top:1px solid var(--line)}
+.side .userchip b{font-size:13.5px;color:var(--ink);display:block;line-height:1.2}
+.side .userchip span{font-size:11.5px;color:var(--muted)}
+
+main.main{padding:34px 38px;max-width:1060px}
+@media(max-width:860px){main.main{padding:22px 18px}}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;gap:12px;flex-wrap:wrap}
+.topbar h1{font-size:26px}
+.view{display:none}
+.view.on{display:block;animation:fadein .25s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ---------- KPIs ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+@media(max-width:900px){.kpis{grid-template-columns:1fr 1fr}}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.kpi b{font-family:var(--display);font-size:27px;font-weight:650;color:var(--ink);display:block}
+.kpi span{font-size:12.5px;color:var(--muted)}
+.kpi .delta{font-size:11.5px;font-weight:600;color:var(--good)}
+
+/* ---------- ruta ---------- */
+.stage{margin-bottom:26px}
+.stage-h{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.stage-h h3{font-size:17px}
+.mod{
+  display:flex;align-items:flex-start;gap:14px;background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--r);padding:15px 18px;margin-bottom:10px;
+}
+.mod.now{border-color:var(--accent);box-shadow:var(--shadow-sm)}
+.mod.lock{opacity:.62}
+.mod .mdot{width:26px;height:26px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-top:2px}
+.mod b{font-size:15px;color:var(--ink);display:block}
+.mod .del{font-size:13px;color:var(--muted);margin-top:3px}
+.mod .del strong{color:var(--gold);font-weight:600}
+.branches{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 10px}
+@media(max-width:700px){.branches{grid-template-columns:1fr}}
+.branch{
+  border:1.5px dashed var(--line-strong);border-radius:var(--r);padding:16px 18px;cursor:pointer;
+  transition:all .15s ease;background:transparent;text-align:left;font-family:var(--body);
+}
+.branch:hover{border-color:var(--accent)}
+.branch.sel{border-style:solid;border-color:var(--accent);background:var(--accent-soft)}
+.branch b{font-size:14.5px;color:var(--ink);display:block;margin-bottom:4px}
+.branch span{font-size:13px;color:var(--muted)}
+
+/* ---------- lección ---------- */
+.lesson-grid{display:grid;grid-template-columns:1fr 330px;gap:22px;align-items:start}
+@media(max-width:1000px){.lesson-grid{grid-template-columns:1fr}}
+.lesson-body h2{font-size:22px;margin-bottom:4px}
+.lesson-body .lmeta{font-size:13px;color:var(--muted);margin-bottom:20px}
+.lblock{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.lblock h4{font-size:15px;margin-bottom:10px}
+.lblock p,.lblock li{font-size:14.5px}
+.lblock ol{padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.term{border-bottom:1.5px dashed var(--accent);cursor:pointer;color:var(--ink);font-weight:500}
+.mentor-dock{position:sticky;top:20px}
+.mentor-dock .card-pad{display:flex;flex-direction:column;gap:12px;max-height:76vh}
+.mentor-log{overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:4px;min-height:180px;max-height:44vh}
+.sugg{display:flex;flex-wrap:wrap;gap:6px}
+.sugg button{
+  border:1px solid var(--accent-line);background:transparent;color:var(--accent-ink);
+  border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;
+}
+.sugg button:hover{background:var(--accent-soft)}
+.mentor-in{display:flex;gap:8px}
+.mentor-in input{flex:1}
+.check{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:14.5px}
+.check input{margin-top:4px;accent-color:var(--accent)}
+.verify-fb{border-left:3px solid var(--good);background:var(--good-soft);border-radius:var(--r-sm);padding:14px 16px;margin-top:14px;font-size:14px;display:none}
+.verify-fb.on{display:block}
+
+/* ---------- diccionario ---------- */
+.dterm{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:10px}
+.dterm b{color:var(--ink);font-size:15px}
+.dterm p{font-size:14px;margin-top:4px}
+
+/* ---------- certificado ---------- */
+.cert{
+  background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-lg);
+  padding:28px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm);
+}
+.cert::before{content:"";position:absolute;inset:10px;border:1px solid var(--line);border-radius:12px;pointer-events:none}
+.cert .cbrand{font-family:var(--display);font-weight:650;font-size:15px;color:var(--accent-ink)}
+.cert h3{font-size:22px;margin:14px 0 4px}
+.cert .cwho{font-size:14px;color:var(--muted)}
+.cert .ccode{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:16px}
+
+/* ---------- feed novedades ---------- */
+.feed-item{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
+.feed-item .fdate{flex:none;width:74px;font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:3px}
+.feed-item b{font-size:15px;color:var(--ink)}
+.feed-item p{font-size:14px;margin-top:4px}
+.feed-item .why{font-size:13px;color:var(--accent-ink);margin-top:6px;font-weight:500}
+
+/* ---------- estándar B2B ---------- */
+.std-sec{margin-bottom:18px}
+.std-sec h4{font-size:15px;margin-bottom:10px}
+.pill-row{display:flex;flex-wrap:wrap;gap:8px}
+
+/* ---------- misc ---------- */
+.section-note{font-size:13px;color:var(--muted);margin-top:10px}
+.qopt{display:block;width:100%;text-align:left;border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r-sm);padding:11px 14px;font-size:14px;margin-bottom:8px;color:var(--ink)}
+.qopt:hover{border-color:var(--accent)}
+.qopt.ok{border-color:var(--good);background:var(--good-soft)}
+.qopt.bad{border-color:var(--danger)}
+</style>
+</head>
+<body>
+
+<!-- ======================= LOGIN ======================= -->
+<div id="login">
+  <div class="login-brandside">
+    <a class="brand" href="index.html">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+        <rect x="1.5" y="8" width="23" height="10" rx="5" class="lvl-body" stroke-width="2"/>
+        <circle cx="13" cy="13" r="3.2" class="lvl-bubble"/>
+        <line x1="8.5" y1="9.5" x2="8.5" y2="16.5" class="lvl-body" stroke-width="1.5"/>
+        <line x1="17.5" y1="9.5" x2="17.5" y2="16.5" class="lvl-body" stroke-width="1.5"/>
+      </svg>
+      nivela
+    </a>
+    <div>
+      <h2 data-i18n="lg_h2">Hoy sales con una tarea tuya resuelta.</h2>
+      <p data-i18n="lg_p">Tu mentor ya conoce tu rol, tu nivel y tus brechas. Lo único que falta eres tú.</p>
+    </div>
+    <span class="small" style="opacity:.7">© 2026 Nivela</span>
+  </div>
+
+  <div class="login-formside">
+    <div class="login-box">
+      <div class="between mb-3">
+        <a class="brand" href="index.html" style="font-size:17px">
+          <svg width="21" height="21" viewBox="0 0 26 26" fill="none">
+            <rect x="1.5" y="8" width="23" height="10" rx="5" class="lvl-body" stroke-width="2"/>
+            <circle cx="13" cy="13" r="3.2" class="lvl-bubble"/>
+          </svg>
+          nivela
+        </a>
+        <div class="toggles">
+          <button class="tgl" data-tgl-lang onclick="toggleLang()">EN</button>
+          <button class="tgl" data-tgl-theme onclick="toggleTheme()">Oscuro</button>
+        </div>
+      </div>
+      <h1 data-i18n="lg_title">Entrar a Nivela</h1>
+      <p class="sub" data-i18n="lg_sub">Bienvenido de vuelta. Tu ruta te espera.</p>
+      <form onsubmit="return fakeLogin(event)">
+        <div class="field">
+          <label data-i18n="lg_email">Correo</label>
+          <input class="input" type="email" placeholder="tu@correo.com" />
+        </div>
+        <div class="field">
+          <label data-i18n="lg_pass">Contraseña</label>
+          <input class="input" type="password" placeholder="••••••••" />
+        </div>
+        <button class="btn btn-primary btn-block" type="submit" data-i18n="lg_btn">Entrar</button>
+      </form>
+      <div class="demo-sep" data-i18n="lg_demo">Explora con una cuenta demo</div>
+      <button class="demo-btn" onclick="enter('b2c')">
+        <span class="avatar">CR</span>
+        <span><b>Camila Ríos</b><span data-i18n="lg_d1">Contadora independiente · Plan Individual</span></span>
+      </button>
+      <button class="demo-btn" onclick="enter('b2b')">
+        <span class="avatar gold">FS</span>
+        <span><b>Fernando Salas</b><span data-i18n="lg_d2">Coordinador académico · U. E. Andina (30 puestos)</span></span>
+      </button>
+      <button class="demo-btn" onclick="enter('admin')">
+        <span class="avatar ink">NV</span>
+        <span><b>Equipo Nivela</b><span data-i18n="lg_d3">Administración de la plataforma</span></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= SHELL ======================= -->
+<div id="shell">
+  <aside class="side">
+    <a class="brand" href="index.html">
+      <svg width="24" height="24" viewBox="0 0 26 26" fill="none">
+        <rect x="1.5" y="8" width="23" height="10" rx="5" class="lvl-body" stroke-width="2"/>
+        <circle cx="13" cy="13" r="3.2" class="lvl-bubble"/>
+      </svg>
+      nivela
+    </a>
+    <nav id="sidenav" style="display:contents"></nav>
+    <div class="spacer"></div>
+    <div class="toggles" style="padding:0 10px 12px">
+      <button class="tgl" data-tgl-lang onclick="toggleLang()">EN</button>
+      <button class="tgl" data-tgl-theme onclick="toggleTheme()">Oscuro</button>
+    </div>
+    <div class="userchip">
+      <span class="avatar" id="uavatar">CR</span>
+      <span style="flex:1"><b id="uname">Camila Ríos</b><span id="urole"></span></span>
+      <button class="tgl" onclick="logout()" data-i18n="s_out">Salir</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1 id="viewtitle"></h1>
+      <span class="chip" id="viewchip"></span>
+    </div>
+    <div id="views"></div>
+  </main>
+</div>
+
+<div class="modal-back" id="modalback" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalbox"></div>
+</div>
+<div id="toast"></div>
+
+<script>
+/* ============================================================
+   Nivela app demo — todo el contenido vive aquí, en ES y EN.
+   ============================================================ */
+
+// ---------- i18n del cromo ----------
+window.I18N = {
+  es: {},
+  en: {
+    lg_h2:"Today you leave with one of your tasks solved.",
+    lg_p:"Your mentor already knows your role, your level and your gaps. The only thing missing is you.",
+    lg_title:"Sign in to Nivela", lg_sub:"Welcome back. Your route is waiting.",
+    lg_email:"Email", lg_pass:"Password", lg_btn:"Sign in",
+    lg_demo:"Explore with a demo account",
+    lg_d1:"Independent accountant · Individual plan",
+    lg_d2:"Academic coordinator · U. E. Andina (30 seats)",
+    lg_d3:"Platform administration",
+    s_out:"Log out"
+  }
+};
+
+// ---------- textos por idioma ----------
+const T = {
+  es: {
+    loginToast:"El registro abre pronto. Mientras tanto, entra con una cuenta demo.",
+    planInd:"Plan Individual", org:"U. E. Andina", admin:"Equipo Nivela",
+    nav:{home:"Hoy", route:"Mi ruta", lesson:"Lección actual", dict:"Mi diccionario", kit:"Mi kit", news:"Novedades", certs:"Certificados",
+         panel:"Panel de adopción", std:"Estándar de uso", routes:"Rutas institucionales", ocerts:"Certificados emitidos",
+         adash:"Resumen", acur:"Curaduría", aorgs:"Instituciones", ahealth:"Salud del sistema"},
+    chips:{b2c:"Contadora independiente", b2b:"Coordinador académico", admin:"Administración"},
+    copied:"Prompt copiado", added:"Agregado a tu diccionario", already:"Ya está en tu diccionario",
+    branchSel:"Rama elegida. Tu ruta se actualizó.",
+    verifyOk:"Entregable revisado por tu mentor",
+    close:"Cerrar", practice:"Practicar", practiceT:"Práctica rápida", pScore:"Resultado",
+    pAgain:"Practicar otra vez", pGood:"Tu diccionario está sólido. Estos términos ya son tuyos.",
+    pMid:"Bien. Repasa los que fallaste: el mentor los reforzará en tu próxima lección.",
+    verifyTitle:"Verificación pública",
+    verifyBody:"Este certificado consta en el registro público de Nivela.",
+    verifyBy:"Emitido por", verifyTo:"Otorgado a", verifyDate:"Fecha", verifyBranch:"Rama",
+    mentorFallback:"Depende de tu caso: si el banco te cambió el formato del extracto, primero pídele a la IA que te muestre cómo interpretó cada columna, y recién ahí concilia. ¿Lo revisamos con tu archivo en la lección?",
+    mentorPlaceholder:"Pregúntale al mentor…",
+    demoNote:"Cuenta demo: los datos son de muestra.",
+    approve:"Aprobar", discard:"Descartar", approved:"Aprobada", discarded:"Descartada", inEval:"En evaluación",
+    curToast:"Estado actualizado en el catálogo."
+  },
+  en: {
+    loginToast:"Registration opens soon. Meanwhile, use a demo account.",
+    planInd:"Individual plan", org:"U. E. Andina", admin:"Nivela team",
+    nav:{home:"Today", route:"My route", lesson:"Current lesson", dict:"My dictionary", kit:"My kit", news:"News", certs:"Certificates",
+         panel:"Adoption panel", std:"Usage standard", routes:"Institutional routes", ocerts:"Issued certificates",
+         adash:"Overview", acur:"Curation", aorgs:"Institutions", ahealth:"System health"},
+    chips:{b2c:"Independent accountant", b2b:"Academic coordinator", admin:"Administration"},
+    copied:"Prompt copied", added:"Added to your dictionary", already:"Already in your dictionary",
+    branchSel:"Branch selected. Your route was updated.",
+    verifyOk:"Deliverable reviewed by your mentor",
+    close:"Close", practice:"Practice", practiceT:"Quick practice", pScore:"Score",
+    pAgain:"Practice again", pGood:"Your dictionary is solid. These terms are yours now.",
+    pMid:"Good. Review the ones you missed: the mentor will reinforce them in your next lesson.",
+    verifyTitle:"Public verification",
+    verifyBody:"This certificate is on Nivela's public registry.",
+    verifyBy:"Issued by", verifyTo:"Granted to", verifyDate:"Date", verifyBranch:"Branch",
+    mentorFallback:"It depends on your case: if the bank changed the statement format, first ask the AI to show you how it read each column, and only then reconcile. Shall we review it with your file in the lesson?",
+    mentorPlaceholder:"Ask your mentor…",
+    demoNote:"Demo account: sample data.",
+    approve:"Approve", discard:"Discard", approved:"Approved", discarded:"Discarded", inEval:"In evaluation",
+    curToast:"Catalog status updated."
+  }
+};
+const tt = () => T[window.LANG] || T.es;
+
+// ---------- estado ----------
+let ROLE = null;
+let dictTerms = [];
+try { dictTerms = JSON.parse(localStorage.getItem("nivela-dict") || "null") || defaultDict(); } catch(e){ dictTerms = defaultDict(); }
+function defaultDict(){
+  return [
+    {k:"prompt", es:"La instrucción que le das a un modelo de IA. Un buen prompt define el rol, el contexto, el formato esperado y los límites.", en:"The instruction you give an AI model. A good prompt defines role, context, expected format and limits."},
+    {k:"modelo de lenguaje", en_k:"language model", es:"Sistema entrenado con texto para producir texto. Distintos modelos rinden distinto según la tarea: por eso eliges, no adivinas.", en:"A system trained on text to produce text. Different models perform differently per task: that's why you choose, not guess."},
+    {k:"contexto", en_k:"context", es:"Todo lo que el modelo sabe de tu caso en esta conversación: archivos, instrucciones, historial. Sin contexto, improvisa.", en:"Everything the model knows about your case in this conversation: files, instructions, history. Without context, it improvises."}
+  ];
+}
+function saveDict(){ try{ localStorage.setItem("nivela-dict", JSON.stringify(dictTerms)); }catch(e){} }
+
+let lessonDone = false;
+let chosenBranch = null;
+try { chosenBranch = localStorage.getItem("nivela-branch") || null; } catch(e){}
+
+// ---------- login/logout ----------
+function fakeLogin(ev){ ev.preventDefault(); toast(tt().loginToast); return false; }
+function enter(role){
+  ROLE = role;
+  document.getElementById("login").style.display = "none";
+  document.getElementById("shell").classList.add("on");
+  buildNav();
+  const first = {b2c:"home", b2b:"panel", admin:"adash"}[role];
+  go(first);
+  const u = {b2c:["CR","Camila Ríos"], b2b:["FS","Fernando Salas"], admin:["NV","Equipo Nivela"]}[role];
+  document.getElementById("uavatar").textContent = u[0];
+  document.getElementById("uavatar").className = "avatar " + (role==="b2b"?"gold":role==="admin"?"ink":"");
+  document.getElementById("uname").textContent = u[1];
+  document.getElementById("urole").textContent = role==="b2c"?tt().planInd:role==="b2b"?tt().org:tt().admin;
+}
+function logout(){
+  ROLE = null;
+  document.getElementById("shell").classList.remove("on");
+  document.getElementById("login").style.display = "grid";
+}
+
+// ---------- navegación ----------
+const NAVS = { b2c:["home","route","lesson","dict","kit","news","certs"],
+               b2b:["panel","std","routes","ocerts"],
+               admin:["adash","acur","aorgs","ahealth"] };
+let CURRENT = null;
+function buildNav(){
+  const nav = document.getElementById("sidenav");
+  nav.innerHTML = "";
+  NAVS[ROLE].forEach(v=>{
+    const b = document.createElement("button");
+    b.className = "snav"; b.dataset.v = v;
+    b.textContent = tt().nav[v];
+    b.onclick = ()=>go(v);
+    nav.appendChild(b);
+  });
+}
+function go(v){
+  CURRENT = v;
+  document.querySelectorAll(".snav").forEach(b=>b.classList.toggle("on", b.dataset.v===v));
+  document.getElementById("viewtitle").textContent = tt().nav[v];
+  document.getElementById("viewchip").textContent = tt().chips[ROLE==="b2c"?"b2c":ROLE==="b2b"?"b2b":"admin"];
+  render(v);
+}
+window.onLangChange = function(){
+  if (!ROLE) return;
+  buildNav(); go(CURRENT);
+  document.getElementById("urole").textContent = ROLE==="b2c"?tt().planInd:ROLE==="b2b"?tt().org:tt().admin;
+};
+
+// ---------- helpers ----------
+function el(html){ const d=document.createElement("div"); d.innerHTML=html; return d; }
+function copyText(txt){
+  (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject())
+    .then(()=>toast(tt().copied))
+    .catch(()=>{ const ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); toast(tt().copied); });
+}
+function openModal(html){ document.getElementById("modalbox").innerHTML = html; document.getElementById("modalback").classList.add("open"); }
+function closeModal(){ document.getElementById("modalback").classList.remove("open"); }
+function L(obj){ return obj[window.LANG] || obj.es; }
+
+/* ============================================================
+   CONTENIDO — B2C (Camila)
+   ============================================================ */
+const LESSON_PROMPT = {
+  es:`Actúa como asistente contable. Te doy (1) mi extracto bancario de junio en CSV y (2) mi libro mayor exportado de mi sistema. Concilia ambos:
+- Empareja cada movimiento por monto, fecha (±2 días) y descripción.
+- Lista aparte TODO lo que no puedas emparejar con certeza, sin inventar pares.
+- No modifiques cifras. Si una descripción es ambigua, pregúntame antes.
+Devuelve: tabla de conciliados, tabla de pendientes y un resumen de diferencias.`,
+  en:`Act as an accounting assistant. I'm giving you (1) my June bank statement as CSV and (2) my general ledger export. Reconcile both:
+- Match each entry by amount, date (±2 days) and description.
+- List separately EVERYTHING you can't match with certainty; do not invent pairs.
+- Don't alter figures. If a description is ambiguous, ask me first.
+Return: a matched table, a pending table and a summary of differences.`
+};
+
+const MENTOR_SCRIPT = [
+  { q:{es:"¿Qué es una alucinación?", en:"What is a hallucination?"},
+    a:{es:"Cuando el modelo afirma algo falso con total seguridad: un par conciliado que no existe, una cifra inventada. Por eso el paso 3 de la lección te hace pedir la lista de pendientes: obligas al modelo a admitir lo que no sabe. ¿Lo agrego a tu diccionario?",
+       en:"When the model states something false with full confidence: a matched pair that doesn't exist, an invented figure. That's why step 3 makes you request the pending list: you force the model to admit what it doesn't know. Shall I add it to your dictionary?"},
+    term:{k:"alucinación", en_k:"hallucination",
+      es:"Respuesta falsa dicha con seguridad por un modelo de IA. Se combate pidiendo fuentes, listas de dudas y verificando contra los datos originales.",
+      en:"A false answer stated confidently by an AI model. You fight it by demanding sources, uncertainty lists, and verifying against the original data."} },
+  { q:{es:"¿Por qué el prompt pide fecha ±2 días?", en:"Why does the prompt ask for date ±2 days?"},
+    a:{es:"Porque el banco registra algunos movimientos con retraso (fines de semana, feriados). Si exiges fecha exacta, el modelo deja fuera pares válidos o, peor, fuerza pares incorrectos para complacerte. El margen realista reduce los dos errores.",
+       en:"Because banks post some entries late (weekends, holidays). If you demand exact dates, the model drops valid pairs or, worse, forces wrong ones to please you. A realistic margin reduces both errors."} },
+  { q:{es:"¿Puedo usar esto con otro banco?", en:"Can I use this with another bank?"},
+    a:{es:"Sí. El método no depende del banco: depende de que tú sepas qué columnas trae tu extracto. Si el formato cambia, pídele primero al modelo que te muestre cómo interpretó cada columna. Esa costumbre te sirve con cualquier archivo, de cualquier fuente.",
+       en:"Yes. The method doesn't depend on the bank: it depends on you knowing your statement's columns. If the format changes, first ask the model to show how it read each column. That habit works with any file from any source."} }
+];
+
+function viewHomeB2C(){
+  return `
+  <div class="kpis">
+    <div class="kpi"><b>4/9</b><span data-x>${L({es:"módulos completados",en:"modules completed"})}</span></div>
+    <div class="kpi"><b>3</b><span>${L({es:"tareas reales resueltas",en:"real tasks solved"})}</span></div>
+    <div class="kpi"><b>${dictTerms.length}</b><span>${L({es:"términos en tu diccionario",en:"terms in your dictionary"})}</span></div>
+    <div class="kpi"><b>1</b><span>${L({es:"certificado obtenido",en:"certificate earned"})}</span></div>
+  </div>
+  <div class="grid2">
+    <div class="card card-pad">
+      <span class="chip acc">${L({es:"Continúa donde quedaste",en:"Continue where you left off"})}</span>
+      <h3 class="mt-2" style="font-size:19px">${L({es:"Lección 5 · Conciliación bancaria con verificación",en:"Lesson 5 · Bank reconciliation with verification"})}</h3>
+      <p class="small muted mt-1">${L({es:"Entregable: tu conciliación de junio, revisada y cerrada.",en:"Deliverable: your June reconciliation, reviewed and closed."})}</p>
+      <div class="bar mt-2"><i style="width:60%"></i></div>
+      <button class="btn btn-primary btn-sm mt-3" onclick="go('lesson')">${L({es:"Retomar lección",en:"Resume lesson"})}</button>
+    </div>
+    <div class="card card-pad">
+      <span class="chip gold">${L({es:"Novedad de tu área",en:"News from your field"})}</span>
+      <h3 class="mt-2" style="font-size:17px">${L({es:"El SRI publicó su formato electrónico 2.1",en:"Ecuador's SRI published e-invoice format 2.1"})}</h3>
+      <p class="small mt-1">${L({es:"Tu plantilla de extracción de facturas necesita un ajuste de dos campos. El mentor ya preparó la actualización en tu próxima práctica.",
+        en:"Your invoice extraction template needs a two-field tweak. The mentor already prepared the update in your next practice."})}</p>
+      <button class="btn btn-outline btn-sm mt-3" onclick="go('news')">${L({es:"Ver todas las novedades",en:"See all news"})}</button>
+    </div>
+  </div>
+  <div class="card card-pad mt-3">
+    <div class="between">
+      <div>
+        <b style="color:var(--ink)">${L({es:"Siguiente en tu ruta",en:"Next on your route"})}</b>
+        <p class="small muted mt-1">${L({es:"Después de esta lección eliges tu rama: kit esencial (superficie) o Excel + IA (profundización). Tu certificado reflejará la que elijas.",
+          en:"After this lesson you choose your branch: essential kit (surface) or Excel + AI (deep dive). Your certificate will reflect your choice."})}</p>
+      </div>
+      <button class="btn btn-soft btn-sm" onclick="go('route')">${L({es:"Ver mi ruta",en:"View my route"})}</button>
+    </div>
+  </div>
+  <p class="section-note">${tt().demoNote}</p>`;
+}
+
+function modRow(state, n, title, del){
+  const dots = {done:'<span class="mdot" style="background:var(--good-soft);color:var(--good)">✓</span>',
+                now:`<span class="mdot" style="background:var(--accent);color:#fff">${n}</span>`,
+                lock:`<span class="mdot" style="background:var(--surface-2);color:var(--muted);border:1px solid var(--line)">${n}</span>`};
+  return `<div class="mod ${state==="now"?"now":state==="lock"?"lock":""}">${dots[state]}
+    <div><b>${title}</b><div class="del"><strong>${L({es:"Entregable:",en:"Deliverable:"})}</strong> ${del}</div></div></div>`;
+}
+
+function viewRoute(){
+  const br = chosenBranch;
+  return `
+  <p class="small muted mb-2">${L({es:"Ruta generada por tu diagnóstico del 14 de junio de 2026 · Rol: contabilidad independiente · Nivel inicial: intermedio",
+    en:"Route generated from your June 14, 2026 diagnosis · Role: independent accounting · Starting level: intermediate"})}</p>
+
+  <div class="stage">
+    <div class="stage-h"><span class="chip good">${L({es:"Etapa 1 · Pensar · completada",en:"Stage 1 · Think · completed"})}</span></div>
+    ${modRow("done",1,L({es:"Qué modelo usar y cuándo",en:"Which model to use, and when"}),L({es:"tu tabla personal de modelos por tarea",en:"your personal model-per-task table"}))}
+    ${modRow("done",2,L({es:"Formular e iterar: contexto antes que trucos",en:"Prompting and iterating: context before tricks"}),L({es:"plantilla de contexto de tu práctica contable",en:"a context template for your accounting practice"}))}
+    ${modRow("done",3,L({es:"Verificar resultados: tu protocolo anti-error",en:"Verifying outputs: your anti-error protocol"}),L({es:"checklist de verificación en 4 pasos",en:"a 4-step verification checklist"}))}
+  </div>
+
+  <div class="stage">
+    <div class="stage-h"><span class="chip acc">${L({es:"Etapa 2 · Aplicar · en curso",en:"Stage 2 · Apply · in progress"})}</span></div>
+    ${modRow("done",4,L({es:"Extraer datos de facturas sin errores",en:"Extract invoice data without errors"}),L({es:"tus 30 facturas de mayo, digitalizadas y validadas",en:"your 30 May invoices, digitized and validated"}))}
+    ${modRow("now",5,L({es:"Conciliación bancaria con verificación",en:"Bank reconciliation with verification"}),L({es:"tu conciliación de junio, cerrada",en:"your June reconciliation, closed"}))}
+    <div class="stage-h mt-3"><span class="chip">${L({es:"Elige tu rama",en:"Choose your branch"})}</span></div>
+    <div class="branches">
+      <button class="branch ${br==="surface"?"sel":""}" onclick="pickBranch('surface')">
+        <b>${L({es:"Kit esencial (superficie)",en:"Essential kit (surface)"})}</b>
+        <span>${L({es:"Dominas lo justo de cada herramienta de tu kit. 3 módulos, certificado: Competencia aplicada.",
+          en:"Master just enough of each tool in your kit. 3 modules; certificate: Applied competence."})}</span>
+      </button>
+      <button class="branch ${br==="deep"?"sel":""}" onclick="pickBranch('deep')">
+        <b>${L({es:"Excel + IA (profundización)",en:"Excel + AI (deep dive)"})}</b>
+        <span>${L({es:"Automatizas tu flujo completo en la herramienta que más usas. 5 módulos, certificado: Especialización.",
+          en:"Automate your whole flow in the tool you use most. 5 modules; certificate: Specialization."})}</span>
+      </button>
+    </div>
+    ${modRow(br?"lock":"lock",6,
+      br==="deep"?L({es:"Macros y fórmulas generadas con IA, revisadas por ti",en:"AI-generated macros and formulas, reviewed by you"}):
+      br==="surface"?L({es:"Tu kit en acción: un caso por herramienta",en:"Your kit in action: one case per tool"}):
+      L({es:"Se desbloquea al elegir tu rama",en:"Unlocks when you choose your branch"}),
+      br?L({es:"según tu rama elegida",en:"according to your chosen branch"}):"…")}
+  </div>
+
+  <div class="stage">
+    <div class="stage-h"><span class="chip">${L({es:"Etapa 3 · Verificar y certificar",en:"Stage 3 · Verify and certify"})}</span></div>
+    ${modRow("lock",8,L({es:"Auditoría cruzada: encuentra los errores sembrados",en:"Cross audit: find the seeded errors"}),L({es:"informe de auditoría aprobado",en:"an approved audit report"}))}
+    ${modRow("lock",9,L({es:"Evaluación final sobre tu propio flujo de trabajo",en:"Final assessment on your own workflow"}),L({es:"certificado verificable de tu rama",en:"your branch's verifiable certificate"}))}
+  </div>`;
+}
+function pickBranch(b){ chosenBranch=b; try{localStorage.setItem("nivela-branch",b);}catch(e){} toast(tt().branchSel); render("route"); }
+
+function viewLesson(){
+  const s = MENTOR_SCRIPT.map((m,i)=>`<button onclick="askScripted(${i})">${L(m.q)}</button>`).join("");
+  return `
+  <div class="lesson-grid">
+    <div class="lesson-body">
+      <h2>${L({es:"Lección 5 · Conciliación bancaria con verificación",en:"Lesson 5 · Bank reconciliation with verification"})}</h2>
+      <p class="lmeta">${L({es:"Etapa 2 · Aplicar · 25 min · entregable real",en:"Stage 2 · Apply · 25 min · real deliverable"})}</p>
+
+      <div class="lblock">
+        <h4>${L({es:"Qué vas a lograr hoy",en:"What you'll achieve today"})}</h4>
+        <p>${L({es:"Cerrar tu conciliación de junio en la mitad del tiempo, con un protocolo que detecta lo que la IA clasifica mal antes de que llegue a tus estados financieros.",
+          en:"Close your June reconciliation in half the time, with a protocol that catches what the AI misclassifies before it reaches your financial statements."})}</p>
+      </div>
+
+      <div class="lblock">
+        <h4>${L({es:"El método, en 4 pasos",en:"The method, in 4 steps"})}</h4>
+        <ol>
+          <li>${L({es:'Prepara el <span class="term" onclick="addTerm(2)">contexto</span>: tu extracto y tu libro mayor, con nombres de columna claros.',
+            en:'Prepare the <span class="term" onclick="addTerm(2)">context</span>: your statement and your ledger, with clear column names.'})}</li>
+          <li>${L({es:'Usa el prompt de abajo. Fíjate que obliga al <span class="term" onclick="addTerm(1)">modelo</span> a separar lo dudoso en vez de forzar pares.',
+            en:'Use the prompt below. Notice it forces the <span class="term" onclick="addTerm(1)">model</span> to separate doubtful entries instead of forcing pairs.'})}</li>
+          <li>${L({es:'Revisa la lista de pendientes primero: ahí viven las <span class="term" onclick="addTermHall()">alucinaciones</span> que evitaste.',
+            en:'Review the pending list first: that\'s where the <span class="term" onclick="addTermHall()">hallucinations</span> you avoided live.'})}</li>
+          <li>${L({es:"Contrasta 3 pares conciliados al azar contra el extracto original. Si los 3 cuadran, el resto es confiable; si uno falla, ajusta el contexto y repite.",
+            en:"Cross-check 3 random matched pairs against the original statement. If all 3 hold, the rest is reliable; if one fails, fix the context and rerun."})}</li>
+        </ol>
+      </div>
+
+      <div class="lblock">
+        <h4>${L({es:"Tu prompt de trabajo",en:"Your working prompt"})}</h4>
+        <div class="promptbox">${LESSON_PROMPT[window.LANG]||LESSON_PROMPT.es}<button class="btn btn-outline btn-sm copybtn" onclick="copyText(LESSON_PROMPT[window.LANG]||LESSON_PROMPT.es)">${L({es:"Copiar",en:"Copy"})}</button></div>
+        <p class="small muted mt-2">${L({es:"Funciona en cualquier asistente de tu kit: el método es tuyo, no de la herramienta.",
+          en:"Works in any assistant from your kit: the method is yours, not the tool's."})}</p>
+      </div>
+
+      <div class="lblock">
+        <h4>${L({es:"Tu entregable",en:"Your deliverable"})}</h4>
+        <label class="check"><input type="checkbox" id="c1"/><span>${L({es:"Conciliados revisados: 3 pares al azar contra el extracto",en:"Matched entries reviewed: 3 random pairs against the statement"})}</span></label>
+        <label class="check"><input type="checkbox" id="c2"/><span>${L({es:"Pendientes resueltos a mano (los 3 movimientos ambiguos)",en:"Pending entries resolved by hand (the 3 ambiguous items)"})}</span></label>
+        <label class="check"><input type="checkbox" id="c3"/><span>${L({es:"Resumen de diferencias archivado con tu cierre de junio",en:"Differences summary filed with your June close"})}</span></label>
+        <button class="btn btn-primary btn-sm mt-2" onclick="submitLesson()">${L({es:"Enviar a revisión del mentor",en:"Submit for mentor review"})}</button>
+        <div class="verify-fb" id="lessonfb">
+          <b>${tt().verifyOk}.</b> ${L({es:"Los 3 pares que contrastaste cuadran y tu resumen de diferencias está completo. Módulo 5 completado: tu conciliación de junio quedó cerrada. Siguiente paso: elige tu rama en “Mi ruta”.",
+          en:"The 3 pairs you cross-checked hold and your differences summary is complete. Module 5 completed: your June reconciliation is closed. Next step: choose your branch in “My route”."})}
+        </div>
+      </div>
+    </div>
+
+    <div class="mentor-dock">
+      <div class="card card-pad">
+        <div class="between"><span class="chip acc">${L({es:"Tu mentor",en:"Your mentor"})}</span><span class="small muted">${L({es:"conoce tu caso",en:"knows your case"})}</span></div>
+        <div class="mentor-log chat" id="mlog">
+          <div class="msg mentor">${L({es:"Hola, Camila. Para esta lección ya tengo tu extracto de junio y tu libro mayor. Cuando llegues al paso 3, avísame: los movimientos del 14 y 15 de junio van a necesitar tu ojo.",
+            en:"Hi Camila. For this lesson I already have your June statement and your ledger. When you reach step 3, let me know: the June 14–15 entries will need your eye."})}</div>
+        </div>
+        <div class="sugg" id="msugg">${s}</div>
+        <form class="mentor-in" onsubmit="return askFree(event)">
+          <input class="input" id="mfree" placeholder="${tt().mentorPlaceholder}" />
+          <button class="btn btn-soft btn-sm" type="submit">→</button>
+        </form>
+      </div>
+    </div>
+  </div>`;
+}
+
+function mentorSay(msgEs){ // recibe html ya localizado
+  const log = document.getElementById("mlog");
+  log.insertAdjacentHTML("beforeend", msgEs);
+  log.scrollTop = log.scrollHeight;
+}
+function askScripted(i){
+  const m = MENTOR_SCRIPT[i];
+  mentorSay(`<div class="msg user">${L(m.q)}</div>`);
+  setTimeout(()=>{
+    mentorSay(`<div class="msg mentor">${L(m.a)}${m.term?` <button class="btn btn-soft btn-sm" style="margin-top:8px" onclick='addTermObj(${JSON.stringify(JSON.stringify(m.term))})'>${L({es:"Agregar al diccionario",en:"Add to dictionary"})}</button>`:""}</div>`);
+  }, 350);
+}
+function askFree(ev){
+  ev.preventDefault();
+  const inp = document.getElementById("mfree");
+  const v = (inp.value||"").trim(); if(!v) return false;
+  mentorSay(`<div class="msg user">${v.replace(/</g,"&lt;")}</div>`);
+  inp.value="";
+  setTimeout(()=>mentorSay(`<div class="msg mentor">${tt().mentorFallback}</div>`), 400);
+  return false;
+}
+function addTermObj(json){
+  const t0 = JSON.parse(json);
+  if (dictTerms.some(d=>d.k===t0.k)) { toast(tt().already); return; }
+  dictTerms.push(t0); saveDict(); toast(tt().added);
+}
+function addTermHall(){ addTermObj(JSON.stringify(MENTOR_SCRIPT[0].term)); }
+function addTerm(i){ toast(tt().already); } // términos base ya presentes
+function submitLesson(){
+  const ok = ["c1","c2","c3"].every(id=>document.getElementById(id).checked);
+  if(!ok){ toast(L({es:"Marca los 3 puntos del entregable primero.",en:"Check the 3 deliverable items first."})); return; }
+  lessonDone = true;
+  document.getElementById("lessonfb").classList.add("on");
+  toast(tt().verifyOk);
+}
+
+function viewDict(){
+  const items = dictTerms.map(d=>`
+    <div class="dterm">
+      <div class="between"><b>${window.LANG==="en"&&d.en_k?d.en_k:d.k}</b><span class="chip">${L({es:"de tus lecciones",en:"from your lessons"})}</span></div>
+      <p>${L({es:d.es,en:d.en})}</p>
+    </div>`).join("");
+  return `
+  <p class="small muted mb-2">${L({es:"Cada término que consultas con el mentor se guarda aquí. Practícalos hasta que sean tuyos.",
+    en:"Every term you ask the mentor about is saved here. Practice them until they're yours."})}</p>
+  ${items}
+  <button class="btn btn-primary mt-2" onclick="startQuiz()">${tt().practice}</button>`;
+}
+
+const QUIZ = [
+  { q:{es:"La IA te entrega una conciliación perfecta, sin pendientes. ¿Qué haces?",en:"The AI returns a perfect reconciliation with zero pending items. What do you do?"},
+    opts:[
+      {t:{es:"Sospecho: pido la lista de dudas y contrasteo pares al azar",en:"Get suspicious: request the doubts list and cross-check random pairs"},ok:true},
+      {t:{es:"La archivo: si no reporta pendientes, no los hay",en:"File it: if it reports no pending items, there are none"},ok:false},
+      {t:{es:"La vuelvo a correr para confirmar",en:"Run it again to confirm"},ok:false}]},
+  { q:{es:"¿Qué le falta a un prompt que solo dice “concilia estos archivos”?",en:"What's missing from a prompt that only says “reconcile these files”?"},
+    opts:[
+      {t:{es:"Cortesía",en:"Politeness"},ok:false},
+      {t:{es:"Contexto, criterios de emparejamiento y qué hacer con lo dudoso",en:"Context, matching criteria and what to do with doubtful entries"},ok:true},
+      {t:{es:"Nada: los modelos actuales lo infieren todo",en:"Nothing: current models infer everything"},ok:false}]},
+  { q:{es:"Una “alucinación” es…",en:"A “hallucination” is…"},
+    opts:[
+      {t:{es:"Un error de tipeo del usuario",en:"A user typo"},ok:false},
+      {t:{es:"Una respuesta falsa dicha con seguridad",en:"A false answer stated with confidence"},ok:true},
+      {t:{es:"Un fallo de conexión del modelo",en:"A model connection failure"},ok:false}]}
+];
+let quizIdx=0, quizScore=0;
+function startQuiz(){ quizIdx=0; quizScore=0; quizStep(); }
+function quizStep(){
+  if(quizIdx>=QUIZ.length){
+    openModal(`<h3 style="margin-bottom:10px">${tt().pScore}: ${quizScore}/${QUIZ.length}</h3>
+      <p style="font-size:14.5px">${quizScore===QUIZ.length?tt().pGood:tt().pMid}</p>
+      <div class="flex mt-3"><button class="btn btn-outline btn-sm" onclick="startQuiz()">${tt().pAgain}</button>
+      <button class="btn btn-primary btn-sm" onclick="closeModal()">${tt().close}</button></div>`);
+    return;
+  }
+  const q = QUIZ[quizIdx];
+  openModal(`<span class="chip acc">${tt().practiceT} · ${quizIdx+1}/${QUIZ.length}</span>
+    <h3 style="margin:14px 0">${L(q.q)}</h3>
+    ${q.opts.map((o,i)=>`<button class="qopt" onclick="quizPick(${i})">${L(o.t)}</button>`).join("")}`);
+}
+function quizPick(i){
+  const q = QUIZ[quizIdx];
+  document.querySelectorAll(".qopt").forEach((b,j)=>{
+    if(q.opts[j].ok) b.classList.add("ok"); else if(j===i) b.classList.add("bad");
+    b.onclick=null;
+  });
+  if(q.opts[i].ok) quizScore++;
+  setTimeout(()=>{ quizIdx++; quizStep(); }, 900);
+}
+
+function viewKit(){
+  const rows = [
+    {tool:"Claude", use:{es:"análisis de documentos y conciliación",en:"document analysis and reconciliation"}, cost:"$0", st:{es:"En uso",en:"In use"}, cls:"good"},
+    {tool:"Gemini", use:{es:"consultas rápidas y hojas de cálculo",en:"quick queries and spreadsheets"}, cost:"$0", st:{es:"En uso",en:"In use"}, cls:"good"},
+    {tool:"Excel + Copilot", use:{es:"fórmulas y automatización del libro",en:"formulas and workbook automation"}, cost:{es:"ya lo pagas",en:"already paid"}, st:{es:"En uso",en:"In use"}, cls:"good"},
+    {tool:"NotebookLM", use:{es:"normativa del SRI como fuente confiable",en:"tax regulations as a trusted source"}, cost:"$0", st:{es:"Por probar",en:"To try"}, cls:"acc"},
+    {tool:"ChatGPT Plus", use:{es:"redundante con tu kit actual",en:"redundant with your current kit"}, cost:"$20/mes", st:{es:"No necesaria",en:"Not needed"}, cls:"warn"}
+  ].map(r=>`<tr><td style="font-weight:600;color:var(--ink)">${r.tool}</td><td>${typeof r.use==="object"?L(r.use):r.use}</td>
+     <td class="mono" style="font-size:12.5px">${typeof r.cost==="object"?L(r.cost):r.cost}</td>
+     <td><span class="chip ${r.cls}">${L(r.st)}</span></td></tr>`).join("");
+  return `
+  <div class="card card-pad mb-2">
+    <div class="between"><b style="color:var(--ink)">${L({es:"Tu presupuesto de herramientas",en:"Your tool budget"})}</b><span class="chip good">$0 / $15</span></div>
+    <p class="small muted mt-1">${L({es:"Tu kit actual cuesta $0 al mes. Nivela prioriza lo gratuito y lo que ya pagas; solo te sugerirá pagar algo si tu trabajo lo justifica.",
+      en:"Your current kit costs $0 a month. Nivela prioritizes free tools and what you already pay for; it will only suggest paying when your work justifies it."})}</p>
+  </div>
+  <div class="card"><table class="table">
+    <thead><tr><th>${L({es:"Herramienta",en:"Tool"})}</th><th>${L({es:"Para qué la usas",en:"What you use it for"})}</th><th>${L({es:"Costo",en:"Cost"})}</th><th>${L({es:"Estado",en:"Status"})}</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>
+  <p class="section-note">${L({es:"El kit se recalcula cuando cambian tus tareas, tu presupuesto o la industria.",en:"The kit recalculates when your tasks, budget or the industry change."})}</p>`;
+}
+
+function viewNews(){
+  const items = [
+    {d:"04 jul", t:{es:"El SRI publicó el formato de factura electrónica 2.1",en:"SRI published e-invoice format 2.1"},
+     p:{es:"Cambian dos campos del XML. Los sistemas contables lo adoptan desde agosto.",en:"Two XML fields change. Accounting systems adopt it from August."},
+     w:{es:"Por qué te importa: tu plantilla de extracción necesita esos dos campos. Tu próxima práctica ya viene actualizada.",en:"Why it matters: your extraction template needs those two fields. Your next practice is already updated."}},
+    {d:"01 jul", t:{es:"Claude incorpora análisis de hojas de cálculo más largo",en:"Claude adds longer spreadsheet analysis"},
+     p:{es:"Ahora procesa libros de hasta 10 000 filas sin partir el archivo.",en:"It now handles workbooks up to 10,000 rows without splitting the file."},
+     w:{es:"Por qué te importa: tu conciliación anual cabe en una sola pasada. Menos pasos, menos errores de empalme.",en:"Why it matters: your annual reconciliation fits in one pass. Fewer steps, fewer stitching errors."}},
+    {d:"26 jun", t:{es:"Kit recomendado: plantillas de cierre mensual (repositorio abierto)",en:"Recommended kit: month-end close templates (open repository)"},
+     p:{es:"Colección gratuita de prompts y hojas para cierres, mantenida por contadores hispanohablantes.",en:"A free collection of prompts and sheets for closings, maintained by Spanish-speaking accountants."},
+     w:{es:"Por qué te importa: el módulo de cierre de tu rama usa tres de estas plantillas como base.",en:"Why it matters: your branch's closing module uses three of these templates as a base."}},
+    {d:"19 jun", t:{es:"Gemini retiró su modo de análisis anterior",en:"Gemini retired its previous analysis mode"},
+     p:{es:"El flujo que muchos usaban para revisar CSV cambió de lugar y de nombre.",en:"The flow many used to review CSVs moved and was renamed."},
+     w:{es:"Por qué te importa: si seguías un tutorial de YouTube de 2025, ya no aplica. Tu lección 4 ya está al día.",en:"Why it matters: if you followed a 2025 YouTube tutorial, it no longer applies. Your lesson 4 is already current."}}
+  ].map(n=>`<div class="feed-item"><span class="fdate">${n.d} 2026</span>
+    <div><b>${L(n.t)}</b><p>${L(n.p)}</p><div class="why">${L(n.w)}</div></div></div>`).join("");
+  return `<p class="small muted mb-1">${L({es:"Seleccionado para tu rol por la curaduría de Nivela. Sin ruido: solo lo que toca tu trabajo.",
+    en:"Curated for your role by Nivela. No noise: only what touches your work."})}</p>${items}`;
+}
+
+function viewCerts(){
+  return `
+  <div class="grid2">
+    <div>
+      <div class="cert">
+        <div class="cbrand">nivela · ${L({es:"certificado verificable",en:"verifiable certificate"})}</div>
+        <h3>${L({es:"Fundamentos de criterio con IA",en:"Foundations of AI judgment"})}</h3>
+        <div class="cwho">Camila Ríos · ${L({es:"Contabilidad independiente",en:"Independent accounting"})}</div>
+        <p class="small mt-2">${L({es:"Competencias verificadas: elección de modelo por tarea, formulación con contexto, protocolo de verificación de resultados.",
+          en:"Verified competences: model choice per task, context-first prompting, output verification protocol."})}</p>
+        <div class="ccode">NVL-2026-0147-CR · 28 jun 2026</div>
+        <div class="flex mt-3">
+          <button class="btn btn-primary btn-sm" onclick="openVerify()">${L({es:"Ver verificación pública",en:"View public verification"})}</button>
+          <button class="btn btn-outline btn-sm" onclick="copyText('nivela-ec.web.app/verificar/NVL-2026-0147-CR')">${L({es:"Copiar enlace",en:"Copy link"})}</button>
+        </div>
+      </div>
+    </div>
+    <div class="card card-pad">
+      <span class="chip gold">${L({es:"En progreso",en:"In progress"})}</span>
+      <h3 class="mt-2" style="font-size:18px">${L({es:"Certificado de tu rama",en:"Your branch certificate"})}</h3>
+      <p class="small mt-1">${L({es:"Se emite al completar la Etapa 3. Reflejará la rama que elijas: Competencia aplicada (superficie) o Especialización (profundización), con tus entregables como evidencia.",
+        en:"Issued when you complete Stage 3. It will reflect your chosen branch: Applied competence (surface) or Specialization (deep dive), with your deliverables as evidence."})}</p>
+      <div class="bar mt-3 gold"><i style="width:55%"></i></div>
+      <p class="small muted mt-1">5/9</p>
+    </div>
+  </div>`;
+}
+function openVerify(){
+  openModal(`<span class="chip good">${tt().verifyTitle}</span>
+    <h3 style="margin:14px 0 6px">NVL-2026-0147-CR</h3>
+    <p style="font-size:14px">${tt().verifyBody}</p>
+    <hr class="divider"/>
+    <table class="table" style="font-size:13.5px">
+      <tr><td class="muted">${tt().verifyTo}</td><td style="font-weight:600;color:var(--ink)">Camila Ríos</td></tr>
+      <tr><td class="muted">${tt().verifyBy}</td><td>Nivela</td></tr>
+      <tr><td class="muted">${tt().verifyDate}</td><td>28 jun 2026</td></tr>
+      <tr><td class="muted">${tt().verifyBranch}</td><td>${L({es:"Fundamentos (tronco común)",en:"Foundations (common core)"})}</td></tr>
+      <tr><td class="muted">${L({es:"Evidencia",en:"Evidence"})}</td><td>${L({es:"3 entregables reales verificados",en:"3 verified real deliverables"})}</td></tr>
+    </table>
+    <button class="btn btn-primary btn-sm mt-3" onclick="closeModal()">${tt().close}</button>`);
+}
+
+/* ============================================================
+   CONTENIDO — B2B (Fernando)
+   ============================================================ */
+function viewPanel(){
+  const roles = [
+    {r:{es:"Docentes secundaria",en:"Secondary teachers"}, n:12, p:72, gap:{es:"verificación de fuentes",en:"source verification"}},
+    {r:{es:"Docentes primaria",en:"Primary teachers"}, n:9, p:58, gap:{es:"formulación con contexto",en:"context-first prompting"}},
+    {r:{es:"Coordinación",en:"Coordination"}, n:4, p:81, gap:{es:"sin brecha común",en:"no common gap"}},
+    {r:{es:"Administración",en:"Administration"}, n:5, p:44, gap:{es:"elección de herramienta",en:"tool choice"}}
+  ].map(x=>`<tr><td style="font-weight:600;color:var(--ink)">${L(x.r)}</td><td>${x.n}</td>
+    <td style="min-width:160px"><div class="bar"><i style="width:${x.p}%"></i></div></td>
+    <td class="mono" style="font-size:12.5px">${x.p}%</td><td class="small">${L(x.gap)}</td></tr>`).join("");
+  return `
+  <div class="kpis">
+    <div class="kpi"><b>28/30</b><span>${L({es:"puestos activos",en:"active seats"})}</span></div>
+    <div class="kpi"><b>61%</b><span>${L({es:"avance promedio de rutas",en:"average route progress"})}</span> <span class="delta">▲ 9% ${L({es:"este mes",en:"this month"})}</span></div>
+    <div class="kpi"><b>214</b><span>${L({es:"entregables reales completados",en:"real deliverables completed"})}</span></div>
+    <div class="kpi"><b>19</b><span>${L({es:"certificados emitidos",en:"certificates issued"})}</span></div>
+  </div>
+  <div class="card"><table class="table">
+    <thead><tr><th>${L({es:"Rol",en:"Role"})}</th><th>${L({es:"Personas",en:"People"})}</th><th colspan="2">${L({es:"Avance",en:"Progress"})}</th><th>${L({es:"Brecha común",en:"Common gap"})}</th></tr></thead>
+    <tbody>${roles}</tbody></table></div>
+  <div class="card card-pad mt-3" style="border-left:3px solid var(--gold)">
+    <b style="color:var(--ink)">${L({es:"Sugerencia del mentor institucional",en:"Institutional mentor suggestion"})}</b>
+    <p class="small mt-1">${L({es:"6 docentes comparten la misma brecha (verificación de fuentes). Un módulo corto de refuerzo, asignado a ese grupo, suele cerrar la brecha en dos semanas. ¿Lo agendamos?",
+      en:"6 teachers share the same gap (source verification). A short reinforcement module assigned to that group usually closes it in two weeks. Schedule it?"})}</p>
+    <div class="flex mt-2">
+      <button class="btn btn-primary btn-sm" onclick="toast(L({es:'Módulo de refuerzo asignado al grupo.',en:'Reinforcement module assigned to the group.'}))">${L({es:"Asignar módulo",en:"Assign module"})}</button>
+      <button class="btn btn-outline btn-sm" onclick="toast(L({es:'Recordatorio guardado.',en:'Reminder saved.'}))">${L({es:"Decidir después",en:"Decide later"})}</button>
+    </div>
+  </div>
+  <p class="section-note">${L({es:"El panel muestra progreso agregado por rol. Nivela no expone la actividad individual de cada persona.",
+    en:"The panel shows aggregate progress by role. Nivela does not expose any individual's activity."})}</p>`;
+}
+
+function viewStd(){
+  const pill = (t,c)=>`<span class="chip ${c}">${t}</span>`;
+  return `
+  <p class="small muted mb-2">${L({es:"Versión 1.3 · vigente desde el 15 de junio de 2026 · construida con el acompañamiento de Nivela",
+    en:"Version 1.3 · effective June 15, 2026 · built with Nivela's guidance"})}</p>
+  <div class="card card-pad std-sec">
+    <h4>${L({es:"Herramientas aprobadas por rol",en:"Approved tools by role"})}</h4>
+    <p class="small mb-1" style="font-weight:600;color:var(--ink)">${L({es:"Docentes",en:"Teachers"})}</p>
+    <div class="pill-row">${pill("Claude","good")}${pill("Gemini","good")}${pill("NotebookLM","good")}${pill(L({es:"Generadores de imágenes: solo con revisión",en:"Image generators: with review only"}),"warn")}</div>
+    <p class="small mb-1 mt-2" style="font-weight:600;color:var(--ink)">${L({es:"Administración",en:"Administration"})}</p>
+    <div class="pill-row">${pill("Claude","good")}${pill("Excel + Copilot","good")}${pill(L({es:"Asistentes sin cuenta institucional",en:"Assistants without an institutional account"}),"warn")}</div>
+  </div>
+  <div class="card card-pad std-sec">
+    <h4>${L({es:"Datos sensibles",en:"Sensitive data"})}</h4>
+    <p class="small">${L({es:"Nunca ingresar a una IA: notas y calificaciones con nombres, datos de salud, información familiar de estudiantes. Siempre anonimizar antes de analizar. Las lecciones de Nivela enseñan cómo hacerlo en cada flujo.",
+      en:"Never enter into an AI: grades and notes with names, health data, students' family information. Always anonymize before analyzing. Nivela's lessons teach how, in every workflow."})}</p>
+  </div>
+  <div class="card card-pad std-sec">
+    <h4>${L({es:"Trabajo con estudiantes",en:"Working with students"})}</h4>
+    <p class="small">${L({es:"La IA se usa para preparar, diferenciar y retroalimentar, no para calificar de forma automática. Todo material generado se revisa antes de llegar al aula: el criterio es del docente.",
+      en:"AI is used to prepare, differentiate and give feedback, not to auto-grade. All generated material is reviewed before reaching the classroom: judgment belongs to the teacher."})}</p>
+  </div>
+  <button class="btn btn-outline btn-sm" onclick="toast(L({es:'Propuesta de cambios enviada a Nivela.',en:'Change proposal sent to Nivela.'}))">${L({es:"Proponer un cambio al estándar",en:"Propose a change to the standard"})}</button>`;
+}
+
+function viewRoutesOrg(){
+  return `
+  <div class="card card-pad mb-2">
+    <div class="between">
+      <div><b style="color:var(--ink)">${L({es:"Ruta docente 2026-B",en:"Teacher route 2026-B"})}</b>
+        <p class="small muted mt-1">${L({es:"9 módulos · certifica: U. E. Andina + Nivela · 21 docentes inscritos",en:"9 modules · certified by: U. E. Andina + Nivela · 21 teachers enrolled"})}</p></div>
+      <span class="chip good">${L({es:"Publicada",en:"Published"})}</span>
+    </div>
+    <div class="bar mt-2"><i style="width:64%"></i></div>
+    <p class="small muted mt-1">${L({es:"avance promedio 64%",en:"average progress 64%"})}</p>
+  </div>
+  <div class="card card-pad mb-2">
+    <div class="between">
+      <div><b style="color:var(--ink)">${L({es:"Ruta administrativa 2026",en:"Administrative route 2026"})}</b>
+        <p class="small muted mt-1">${L({es:"6 módulos · en diseño junto al equipo de Nivela",en:"6 modules · being designed with the Nivela team"})}</p></div>
+      <span class="chip warn">${L({es:"Borrador",en:"Draft"})}</span>
+    </div>
+    <div class="flex mt-2">
+      <button class="btn btn-primary btn-sm" onclick="toast(L({es:'Revisión agendada con el equipo de Nivela.',en:'Review scheduled with the Nivela team.'}))">${L({es:"Agendar revisión",en:"Schedule review"})}</button>
+      <button class="btn btn-outline btn-sm" onclick="openDraft()">${L({es:"Ver borrador",en:"View draft"})}</button>
+    </div>
+  </div>
+  <div class="card card-pad" style="border-style:dashed">
+    <b style="color:var(--ink)">${L({es:"¿Nueva ruta?",en:"New route?"})}</b>
+    <p class="small mt-1">${L({es:"Nivela la construye contigo: define el rol, los entregables reales y el estándar, y tu institución respalda el certificado.",
+      en:"Nivela builds it with you: define the role, the real deliverables and the standard, and your institution backs the certificate."})}</p>
+    <button class="btn btn-soft btn-sm mt-2" onclick="toast(L({es:'Solicitud enviada. El equipo de Nivela te contactará.',en:'Request sent. The Nivela team will contact you.'}))">${L({es:"Solicitar diseño de ruta",en:"Request route design"})}</button>
+  </div>`;
+}
+function openDraft(){
+  openModal(`<span class="chip warn">${L({es:"Borrador",en:"Draft"})}</span>
+  <h3 style="margin:12px 0 10px">${L({es:"Ruta administrativa 2026",en:"Administrative route 2026"})}</h3>
+  <ol style="padding-left:20px;font-size:14.5px;display:flex;flex-direction:column;gap:8px">
+    <li>${L({es:"Fundamentos: elección de modelo y contexto",en:"Foundations: model choice and context"})}</li>
+    <li>${L({es:"Redacción de comunicados con revisión",en:"Drafting communications with review"})}</li>
+    <li>${L({es:"Hojas de cálculo: matrícula y pagos",en:"Spreadsheets: enrollment and payments"})}</li>
+    <li>${L({es:"Datos sensibles: anonimizar antes de analizar",en:"Sensitive data: anonymize before analyzing"})}</li>
+    <li>${L({es:"Verificación y archivo de resultados",en:"Verification and filing of results"})}</li>
+    <li>${L({es:"Evaluación final con entregable real",en:"Final assessment with a real deliverable"})}</li>
+  </ol>
+  <button class="btn btn-primary btn-sm mt-3" onclick="closeModal()">${tt().close}</button>`);
+}
+
+function viewOCerts(){
+  const rows = [
+    ["María Torres", {es:"Docente secundaria",en:"Secondary teacher"}, "NVL-2026-0201-AN", "02 jul 2026"],
+    ["Luis Cárdenas", {es:"Docente secundaria",en:"Secondary teacher"}, "NVL-2026-0198-AN", "30 jun 2026"],
+    ["Paola Jiménez", {es:"Coordinación",en:"Coordination"}, "NVL-2026-0190-AN", "27 jun 2026"],
+    ["Andrés Villa", {es:"Docente primaria",en:"Primary teacher"}, "NVL-2026-0186-AN", "25 jun 2026"]
+  ].map(r=>`<tr><td style="font-weight:600;color:var(--ink)">${r[0]}</td><td>${L(r[1])}</td>
+    <td class="mono" style="font-size:12px">${r[2]}</td><td class="small">${r[3]}</td>
+    <td><button class="btn btn-outline btn-sm" onclick="copyText('nivela-ec.web.app/verificar/${r[2]}')">${L({es:"Copiar enlace",en:"Copy link"})}</button></td></tr>`).join("");
+  return `
+  <p class="small muted mb-2">${L({es:"Certificados respaldados por U. E. Andina y verificables públicamente. 19 emitidos este período; se muestran los más recientes.",
+    en:"Certificates backed by U. E. Andina and publicly verifiable. 19 issued this term; most recent shown."})}</p>
+  <div class="card"><table class="table">
+    <thead><tr><th>${L({es:"Persona",en:"Person"})}</th><th>${L({es:"Rol",en:"Role"})}</th><th>${L({es:"Código",en:"Code"})}</th><th>${L({es:"Fecha",en:"Date"})}</th><th></th></tr></thead>
+    <tbody>${rows}</tbody></table></div>`;
+}
+
+/* ============================================================
+   CONTENIDO — ADMIN (equipo Nivela)
+   ============================================================ */
+function viewADash(){
+  return `
+  <div class="kpis">
+    <div class="kpi"><b>412</b><span>${L({es:"usuarios registrados",en:"registered users"})}</span> <span class="delta">▲ 38</span></div>
+    <div class="kpi"><b>187</b><span>${L({es:"suscriptores activos",en:"active subscribers"})}</span> <span class="delta">▲ 21</span></div>
+    <div class="kpi"><b>$2 410</b><span>${L({es:"ingreso mensual (MRR)",en:"monthly revenue (MRR)"})}</span></div>
+    <div class="kpi"><b>71%</b><span>${L({es:"margen bruto",en:"gross margin"})}</span></div>
+  </div>
+  <div class="grid2">
+    <div class="card card-pad">
+      <h4 style="font-size:15px;margin-bottom:12px">${L({es:"Economía por suscriptor (promedio)",en:"Per-subscriber economics (average)"})}</h4>
+      <table class="table" style="font-size:13.5px">
+        <tr><td>${L({es:"Ingreso",en:"Revenue"})}</td><td class="mono" style="text-align:right">$10.00</td></tr>
+        <tr><td>${L({es:"APIs de IA (mentor)",en:"AI APIs (mentor)"})}</td><td class="mono" style="text-align:right">−$1.80</td></tr>
+        <tr><td>${L({es:"Pasarela de pagos",en:"Payment gateway"})}</td><td class="mono" style="text-align:right">−$0.42</td></tr>
+        <tr><td>${L({es:"Infraestructura",en:"Infrastructure"})}</td><td class="mono" style="text-align:right">−$0.31</td></tr>
+        <tr><td style="font-weight:700;color:var(--ink)">${L({es:"Margen",en:"Margin"})}</td><td class="mono" style="text-align:right;font-weight:700;color:var(--good)">$7.47</td></tr>
+      </table>
+    </div>
+    <div class="card card-pad">
+      <h4 style="font-size:15px;margin-bottom:12px">${L({es:"Uso del mentor",en:"Mentor usage"})}</h4>
+      <div class="kpis" style="grid-template-columns:1fr 1fr;margin-bottom:0">
+        <div class="kpi"><b>1 934</b><span>${L({es:"consultas por día",en:"queries per day"})}</span></div>
+        <div class="kpi"><b>86%</b><span>${L({es:"resueltas sin escalar de modelo",en:"resolved without model escalation"})}</span></div>
+        <div class="kpi"><b>312</b><span>${L({es:"términos agregados a diccionarios (semana)",en:"terms added to dictionaries (week)"})}</span></div>
+        <div class="kpi"><b>4.8/5</b><span>${L({es:"utilidad percibida de lecciones",en:"perceived lesson usefulness"})}</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="section-note">${tt().demoNote}</p>`;
+}
+
+let CUR = [
+  {tool:"Perplexity Finance", area:{es:"finanzas",en:"finance"}, note:{es:"útil para tasas y normativa al día; falta validar citas",en:"useful for current rates and regulation; citations need validating"}, st:0},
+  {tool:"Gamma 3.0", area:{es:"docencia / presentaciones",en:"teaching / presentations"}, note:{es:"buen generador de material visual de clase",en:"good classroom visual material generator"}, st:0},
+  {tool:"AutoRecon AI", area:{es:"contabilidad",en:"accounting"}, note:{es:"promete conciliación total automática; en pruebas inventó pares",en:"promises fully automatic reconciliation; invented pairs in testing"}, st:0}
+];
+function viewACur(){
+  const stChip = s => s===1?`<span class="chip good">${tt().approved}</span>`:s===2?`<span class="chip warn">${tt().discarded}</span>`:`<span class="chip">${tt().inEval}</span>`;
+  const rows = CUR.map((c,i)=>`<tr>
+    <td style="font-weight:600;color:var(--ink)">${c.tool}</td><td>${L(c.area)}</td>
+    <td class="small">${L(c.note)}</td><td>${stChip(c.st)}</td>
+    <td style="white-space:nowrap">
+      <button class="btn btn-outline btn-sm" onclick="curSet(${i},1)">${tt().approve}</button>
+      <button class="btn btn-outline btn-sm" onclick="curSet(${i},2)">${tt().discard}</button>
+    </td></tr>`).join("");
+  return `
+  <p class="small muted mb-2">${L({es:"Herramientas candidatas a entrar en kits y novedades. Aprobar publica la evaluación en las áreas correspondientes.",
+    en:"Candidate tools for kits and news. Approving publishes the evaluation to the relevant fields."})}</p>
+  <div class="card"><table class="table">
+    <thead><tr><th>${L({es:"Herramienta",en:"Tool"})}</th><th>${L({es:"Área",en:"Field"})}</th><th>${L({es:"Nota de curaduría",en:"Curation note"})}</th><th>${L({es:"Estado",en:"Status"})}</th><th></th></tr></thead>
+    <tbody>${rows}</tbody></table></div>
+  <div class="card card-pad mt-3">
+    <h4 style="font-size:15px;margin-bottom:8px">${L({es:"Novedades en cola de publicación",en:"News queued for publication"})}</h4>
+    <p class="small">${L({es:"“Actualización del formato SRI 2.1” → contabilidad (publicada) · “Cambio de análisis en Gemini” → todas las áreas (publicada) · “Gamma 3.0 para material de clase” → docencia (esperando aprobación de curaduría)",
+      en:"“SRI 2.1 format update” → accounting (published) · “Gemini analysis change” → all fields (published) · “Gamma 3.0 for class material” → teaching (awaiting curation approval)"})}</p>
+  </div>`;
+}
+function curSet(i,s){ CUR[i].st=s; toast(tt().curToast); render("acur"); }
+
+function viewAOrgs(){
+  const rows = [
+    ["U. E. Andina", {es:"educación",en:"education"}, "30", "61%", {es:"feb 2027",en:"Feb 2027"}],
+    ["Estudio Contable Vera", {es:"servicios contables",en:"accounting services"}, "12", "48%", {es:"nov 2026",en:"Nov 2026"}],
+    ["Agencia Kuska", {es:"marketing",en:"marketing"}, "9", "35%", {es:"ene 2027",en:"Jan 2027"}]
+  ].map(r=>`<tr><td style="font-weight:600;color:var(--ink)">${r[0]}</td><td>${L(r[1])}</td>
+    <td>${r[2]}</td><td>${r[3]}</td><td class="small">${L(r[4])}</td></tr>`).join("");
+  return `
+  <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><b>3</b><span>${L({es:"instituciones activas",en:"active institutions"})}</span></div>
+    <div class="kpi"><b>51</b><span>${L({es:"puestos B2B",en:"B2B seats"})}</span></div>
+    <div class="kpi"><b>2</b><span>${L({es:"rutas institucionales en diseño",en:"institutional routes in design"})}</span></div>
+  </div>
+  <div class="card"><table class="table">
+    <thead><tr><th>${L({es:"Institución",en:"Institution"})}</th><th>${L({es:"Sector",en:"Sector"})}</th><th>${L({es:"Puestos",en:"Seats"})}</th><th>${L({es:"Avance",en:"Progress"})}</th><th>${L({es:"Renovación",en:"Renewal"})}</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>`;
+}
+
+function viewAHealth(){
+  return `
+  <div class="kpis">
+    <div class="kpi"><b>99.98%</b><span>${L({es:"disponibilidad (30 días)",en:"uptime (30 days)"})}</span></div>
+    <div class="kpi"><b>1.4 s</b><span>${L({es:"latencia media del mentor",en:"median mentor latency"})}</span></div>
+    <div class="kpi"><b>$11.60</b><span>${L({es:"costo diario de APIs",en:"daily API cost"})}</span></div>
+    <div class="kpi"><b>0</b><span>${L({es:"incidencias abiertas",en:"open incidents"})}</span></div>
+  </div>
+  <div class="card card-pad">
+    <h4 style="font-size:15px;margin-bottom:10px">${L({es:"Enrutamiento de modelos",en:"Model routing"})}</h4>
+    <p class="small">${L({es:"El 86% de las consultas del mentor se resuelve con modelos económicos; el resto escala a modelos de frontera cuando la lección lo exige (análisis de archivos largos, verificación compleja). Así el costo por usuario activo se mantiene entre $1 y $3 al mes.",
+      en:"86% of mentor queries are handled by economical models; the rest escalate to frontier models when the lesson demands it (long-file analysis, complex verification). That keeps cost per active user between $1 and $3 a month."})}</p>
+  </div>`;
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+const VIEWS = { home:viewHomeB2C, route:viewRoute, lesson:viewLesson, dict:viewDict, kit:viewKit, news:viewNews, certs:viewCerts,
+                panel:viewPanel, std:viewStd, routes:viewRoutesOrg, ocerts:viewOCerts,
+                adash:viewADash, acur:viewACur, aorgs:viewAOrgs, ahealth:viewAHealth };
+function render(v){
+  const host = document.getElementById("views");
+  host.innerHTML = `<div class="view on">${VIEWS[v]()}</div>`;
+}
+</script>
+<script src="assets/nivela.js"></script>
+</body>
+</html>
