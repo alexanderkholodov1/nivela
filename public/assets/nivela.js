@@ -24,17 +24,23 @@
   function applyI18n() {
     if (!window.I18N) return;
     var dict = window.I18N[window.LANG] || {};
+    // El HTML se escribe en español; capturamos el original en el primer paso
+    // para poder restaurarlo cuando el diccionario del idioma no tenga la clave
+    // (así el toggle vuelve a ES en vez de quedarse en EN).
     document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      if (el.__i18nText === undefined) el.__i18nText = el.textContent;
       var k = el.getAttribute("data-i18n");
-      if (dict[k] !== undefined) el.textContent = dict[k];
+      el.textContent = dict[k] !== undefined ? dict[k] : el.__i18nText;
     });
     document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+      if (el.__i18nHtml === undefined) el.__i18nHtml = el.innerHTML;
       var k = el.getAttribute("data-i18n-html");
-      if (dict[k] !== undefined) el.innerHTML = dict[k];
+      el.innerHTML = dict[k] !== undefined ? dict[k] : el.__i18nHtml;
     });
     document.querySelectorAll("[data-i18n-ph]").forEach(function (el) {
+      if (el.__i18nPh === undefined) el.__i18nPh = el.getAttribute("placeholder") || "";
       var k = el.getAttribute("data-i18n-ph");
-      if (dict[k] !== undefined) el.setAttribute("placeholder", dict[k]);
+      el.setAttribute("placeholder", dict[k] !== undefined ? dict[k] : el.__i18nPh);
     });
     document.documentElement.lang = window.LANG;
   }

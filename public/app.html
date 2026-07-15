@@ -78,9 +78,12 @@ aside.side{
 .snav:hover{color:var(--ink);background:var(--surface-2)}
 .snav.on{background:var(--accent-soft);color:var(--accent-ink);font-weight:600}
 .side .spacer{flex:1}
-.side .userchip{display:flex;align-items:center;gap:10px;padding:10px 10px;border-top:1px solid var(--line)}
-.side .userchip b{font-size:13.5px;color:var(--ink);display:block;line-height:1.2}
-.side .userchip span{font-size:11.5px;color:var(--muted)}
+.side .userchip{display:flex;align-items:center;gap:10px;padding:12px 8px;border-top:1px solid var(--line)}
+.side .userchip .uinfo{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.2}
+.side .userchip b{font-size:13px;color:var(--ink);line-height:1.2}
+.side .userchip .urole{font-size:11.5px;color:var(--muted);line-height:1.2}
+.side .userchip .logout-btn{flex:none;padding:7px;line-height:0;border-radius:50%}
+.side .userchip .logout-btn svg{display:block}
 
 main.main{padding:34px 38px;max-width:1060px}
 @media(max-width:860px){main.main{padding:22px 18px}}
@@ -270,8 +273,10 @@ main.main{padding:34px 38px;max-width:1060px}
     </div>
     <div class="userchip">
       <span class="avatar" id="uavatar">CR</span>
-      <span style="flex:1"><b id="uname">Camila Ríos</b><span id="urole"></span></span>
-      <button class="tgl" onclick="logout()" data-i18n="s_out">Salir</button>
+      <span class="uinfo"><b id="uname">Camila Ríos</b><span class="urole" id="urole"></span></span>
+      <button class="tgl logout-btn" id="logoutbtn" onclick="logout()" aria-label="Salir" title="Salir">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
     </div>
   </aside>
 
@@ -390,6 +395,13 @@ function enter(role){
   document.getElementById("uavatar").className = "avatar " + (role==="b2b"?"gold":role==="admin"?"ink":"");
   document.getElementById("uname").textContent = u[1];
   document.getElementById("urole").textContent = role==="b2c"?tt().planInd:role==="b2b"?tt().org:tt().admin;
+  setLogoutLabel();
+}
+function setLogoutLabel(){
+  const lb = document.getElementById("logoutbtn");
+  if(!lb) return;
+  const t = window.LANG==="es" ? "Salir" : "Log out";
+  lb.title = t; lb.setAttribute("aria-label", t);
 }
 function logout(){
   ROLE = null;
@@ -424,6 +436,7 @@ window.onLangChange = function(){
   if (!ROLE) return;
   buildNav(); go(CURRENT);
   document.getElementById("urole").textContent = ROLE==="b2c"?tt().planInd:ROLE==="b2b"?tt().org:tt().admin;
+  setLogoutLabel();
 };
 
 // ---------- helpers ----------
